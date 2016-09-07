@@ -14,7 +14,7 @@ object Starter extends App {
      */
     def Initialize() = {
     //  val connection = new ConnectionFactory()
-      println("Hey im intialized thru sbt!")
+      println("Hey Initialize() was called on RabbitConnection!!")
     }
   }
 
