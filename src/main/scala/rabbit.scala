@@ -21,5 +21,3 @@ object Starter extends App {
   //initialize that RabbitMQ connection
   RabbitConnection.Initialize()
 }
-
-Starter.RabbitConnection.Initialize()
