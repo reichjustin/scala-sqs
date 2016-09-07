@@ -4,7 +4,9 @@ object Starter extends App {
    * This is the RabbitConnection Object
    * That will manage our queue connection
    */
-  object RabbitConnection {
+  object RabbitConnection extends QueueConnection {
+
+    //implement the QueueConnection val's
     val server = "http://localhost"
     val port = 15672
     val connectionString = s"$server/$port"
@@ -20,4 +22,13 @@ object Starter extends App {
 
   //initialize that RabbitMQ connection
   RabbitConnection.Initialize()
+}
+
+//a generic QueueConnection abstract class to enforce what we need
+abstract class QueueConnection {
+  val server: String
+  val port: Int
+  val connectionString: String
+
+  def Initialize()
 }
