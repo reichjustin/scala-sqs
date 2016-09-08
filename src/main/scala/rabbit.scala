@@ -24,8 +24,8 @@ object Starter extends App {
   RabbitConnection.Initialize()
 }
 
-//a generic QueueConnection abstract class to enforce what we need
-abstract class QueueConnection {
+//a generic QueueConnection trait
+trait  QueueConnection {
   val server: String
   val port: Int
   val connectionString: String
