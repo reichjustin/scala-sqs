@@ -15,9 +15,9 @@ object Starter extends App {
      * Setups a connection to queues
      */
     def Initialize() = {
-    //  val connection = new ConnectionFactory()
-      println("Hey Initialize() was called on RabbitConnection!!")
+      println("RabbitConnection.Initialize()")
     }
+
   }
 
   //initialize that RabbitMQ connection
