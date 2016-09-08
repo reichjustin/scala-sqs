@@ -16,8 +16,8 @@ object Starter extends App {
      */
     def Initialize() = {
       println("RabbitConnection.Initialize()")
+      println(s"connecting to: $connectionString")
     }
-
   }
 
   //initialize that RabbitMQ connection
