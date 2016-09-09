@@ -17,9 +17,9 @@ object Starter extends App {
      * Setups a connection to queues
      */
     def Initialize() = {
-      implicit val sqs = SQS.at(Region.US_WEST_2)
+      val sqs = SQS.at(Region.US_WEST_2)
       val queue = sqs createQueueAndReturnQueueName  "justin-test"
-
+        
       //setup a read every 500 milliseconds using RxScala
       val queueReader = Observable.interval(500 millis)
       queueReader.subscribe(qr => ReadMessage(queue,sqs))
@@ -33,7 +33,7 @@ object Starter extends App {
         s.receiveMessage().foreach(m => {
           //save to mongo
           MongoConnection.Save(m)
-          
+
           //delete from the queue
           sqs.deleteMessage(m)
         })

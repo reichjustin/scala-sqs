@@ -8,14 +8,13 @@ object MongoConnection extends DatabaseConnection {
   def Save(msg: Message) = {
     //print out
     val doc = Document("Message" -> msg.toString)
-    println(doc.toString)
 
     val client = MongoClient(connectionString)
 
     val db = client.getDatabase("messages")
     val collection = db.getCollection("msgs")
 
-    val result = collection.insertOne(doc).foreach(comp => println(comp))
+    collection.insertOne(doc).foreach(comp => println(comp))
   }
 }
 
