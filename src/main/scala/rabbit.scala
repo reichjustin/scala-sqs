@@ -1,7 +1,7 @@
 import awscala._
 import awscala.sqs._
 import rx.lang.scala.Observable
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 
 
 //create an App wrapped to start it all up
@@ -21,7 +21,7 @@ object Starter extends App {
       val queue = sqs createQueueAndReturnQueueName  "justin-test"
 
       //setup a read every 500 milliseconds using RxScala
-      val queueReader = Observable.interval(Duration.create("500 millis"))
+      val queueReader = Observable.interval(500 millis)
       queueReader.subscribe(qr => ReadMessage(queue,sqs))
     }
 
@@ -33,7 +33,7 @@ object Starter extends App {
         s.receiveMessage().foreach(m => {
           //save to mongo
           MongoConnection.Save(m)
-
+          
           //delete from the queue
           sqs.deleteMessage(m)
         })
