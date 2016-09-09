@@ -27,21 +27,25 @@ object Starter extends App {
 
     //read the message from the queue
     def ReadMessage(queue: Queue,sqs: SQS) = {
+      val returnQueue = sqs createQueueAndReturnQueueName  "return-queue"
       //setup a connection to the queue
       sqs.withQueue(queue) { s =>
         //each message received loop thru
         s.receiveMessage().foreach(m => {
           //save to mongo
-          MongoConnection.Save(m)
+          MongoConnection.Save(m, "msgs")
 
           //delete from the queue
           sqs.deleteMessage(m)
+
+          sqs.send(returnQueue, "process-message")
         })
       }
     }
   }
 
-  //initialize that RabbitMQ connection
+  //initialize that RabbitMQ connection and Mongo Connection
+  MongoConnection.InitializeConnection()
   RabbitConnection.Initialize()
 }
 
