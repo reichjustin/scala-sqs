@@ -1,23 +1,34 @@
+import awscala._, sqs._
+
+
 //create an App wrapped to start it all up
 object Starter extends App {
+
   /*
    * This is the RabbitConnection Object
    * That will manage our queue connection
    */
   object RabbitConnection extends QueueConnection {
-
     //implement the QueueConnection val's
     val server = "http://localhost"
     val port = 15672
     val connectionString = s"$server/$port"
+    val accessKey = "AKIAJDHE5W64BAF55GLQ"
+    val secret = "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"
+
 
     /*
      * Setups a connection to queues
      */
     def Initialize() = {
-      println("RabbitConnection.Initialize()")
-      println(s"connecting to: $connectionString")
+      implicit val sqs = SQS.at(Region.US_WEST_2)
+      val queue = sqs createQueueAndReturnQueueName  "justin-test"
+
+      val msg = scala.io.StdIn.readLine("What do you want to send: ")
+      queue.add(msg)
     }
+
+//    def SendMessage(msg: String, queue: Queue) = queue.add(msg)
   }
 
   //initialize that RabbitMQ connection
@@ -29,6 +40,8 @@ trait  QueueConnection {
   val server: String
   val port: Int
   val connectionString: String
+  val accessKey: String
+  val secret: String
 
-  def Initialize()
+  def Initialize(): Unit
 }
