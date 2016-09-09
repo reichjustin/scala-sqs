@@ -38,6 +38,7 @@ object Starter extends App {
           //delete from the queue
           sqs.deleteMessage(m)
 
+          //send a message to another queue just for shitz and gigz
           sqs.send(returnQueue, "process-message")
         })
       }
