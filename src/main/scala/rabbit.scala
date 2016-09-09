@@ -1,4 +1,7 @@
-import awscala._, sqs._
+import awscala._
+import awscala.sqs._
+import rx.lang.scala.Observable
+import scala.concurrent.duration.Duration
 
 
 //create an App wrapped to start it all up
@@ -16,7 +19,6 @@ object Starter extends App {
     val accessKey = "AKIAJDHE5W64BAF55GLQ"
     val secret = "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"
 
-
     /*
      * Setups a connection to queues
      */
@@ -24,11 +26,25 @@ object Starter extends App {
       implicit val sqs = SQS.at(Region.US_WEST_2)
       val queue = sqs createQueueAndReturnQueueName  "justin-test"
 
-      val msg = scala.io.StdIn.readLine("What do you want to send: ")
-      queue.add(msg)
+      //setup a read every 500 milliseconds using RxScala
+      val queueReader = Observable.interval(Duration.create("500 millis"))
+      queueReader.subscribe(qr => ReadMessage(queue,sqs))
     }
 
-//    def SendMessage(msg: String, queue: Queue) = queue.add(msg)
+    //read the message from the queue
+    def ReadMessage(queue: Queue,sqs: SQS) = {
+      //setup a connection to the queue
+      sqs.withQueue(queue) { s =>
+        //each message received loop thru
+        s.receiveMessage().foreach(m => {
+          //print out
+          println(m.body.toString)
+
+          //delete from the queue
+          sqs.deleteMessage(m)
+        })
+      }
+    }
   }
 
   //initialize that RabbitMQ connection
@@ -44,4 +60,5 @@ trait  QueueConnection {
   val secret: String
 
   def Initialize(): Unit
+  def ReadMessage(queue: Queue,sqs: SQS)
 }
