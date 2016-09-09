@@ -13,8 +13,8 @@ object Starter extends App {
     val server = "http://localhost"
     val port = 15672
     val connectionString = s"$server/$port"
-    val accessKey = "AKIAJDHE5W64BAF55GLQ"
-    val secret = "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"
+    val accessKey = "<ADD_KEY>"
+    val secret = "<ADD_SECRET>"
 
 
     /*
