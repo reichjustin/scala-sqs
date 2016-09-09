@@ -12,12 +12,6 @@ object Starter extends App {
    * That will manage our queue connection
    */
   object RabbitConnection extends QueueConnection {
-    //implement the QueueConnection val's
-    val server = "http://localhost"
-    val port = 15672
-    val connectionString = s"$server/$port"
-    val accessKey = "AKIAJDHE5W64BAF55GLQ"
-    val secret = "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"
 
     /*
      * Setups a connection to queues
@@ -37,8 +31,8 @@ object Starter extends App {
       sqs.withQueue(queue) { s =>
         //each message received loop thru
         s.receiveMessage().foreach(m => {
-          //print out
-          println(m.body.toString)
+          //save to mongo
+          MongoConnection.Save(m)
 
           //delete from the queue
           sqs.deleteMessage(m)
@@ -53,12 +47,6 @@ object Starter extends App {
 
 //a generic QueueConnection trait
 trait  QueueConnection {
-  val server: String
-  val port: Int
-  val connectionString: String
-  val accessKey: String
-  val secret: String
-
   def Initialize(): Unit
   def ReadMessage(queue: Queue,sqs: SQS)
 }
