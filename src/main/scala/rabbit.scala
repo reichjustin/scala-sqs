@@ -33,8 +33,8 @@ object Starter extends App {
         //each message received loop thru
         s.receiveMessage().foreach(m => {
           //save to mongo
-          MongoConnection.Save(m, "msgs")
-
+        //  MongoConnection.Save(m, "msgs")
+          dynamo.Save(m)
           //delete from the queue
           sqs.deleteMessage(m)
 
@@ -46,7 +46,7 @@ object Starter extends App {
   }
 
   //initialize that RabbitMQ connection and Mongo Connection
-  MongoConnection.InitializeConnection()
+ // MongoConnection.InitializeConnection()
   RabbitConnection.Initialize()
 }
 
