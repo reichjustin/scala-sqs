@@ -1,4 +1,4 @@
-name := """read-from-rabbit"""
+name := """read-from-rabbit2"""
 version := "1.1"
 scalaVersion := "2.11.8"
 libraryDependencies ++= Seq(
